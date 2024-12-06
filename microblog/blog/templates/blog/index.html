@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Microblog{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Recent Posts</h2>
+    {% if not posts %}
+        <h3 style="text-align: center;">No posts yet.</h3>
+    {% else %}
+        {% for post in posts %}
+            <article>
+                <h3><a href="{% url 'blog:article' id=post.id %}">{{ post.title }}</a></h3>
+                <p><small>By {{ post.author.username }} on {{ post.created }}</small></p>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post Image 2">
+                {% endif %}
+                <p>{{ post.body|truncatechars:150 }}</p>
+                <p>👍 {{ post.likes_count }} 💬 {{ post.comments.count }}</p>
+            </article>
+        {% endfor %}
+    {% endif %}
+</section>
+{% endblock %}

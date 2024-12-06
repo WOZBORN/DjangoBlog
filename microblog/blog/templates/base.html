@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Microblog{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_styles %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>Microblog</h1>
+            <ul>
+                <li><a href="{% url 'blog:index' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'blog:create' %}">New Post</a></li>
+                    <li><a href="{% url 'blog:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'blog:login' %}">Login</a></li>
+                    <li><a href="{% url 'blog:register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Flash Messages -->
+    {% if messages %}
+        <div id="flash-messages">
+            {% for message in messages %}
+                <div class="flash {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Microblog</p>
+        {% block extra_footer %}{% endblock %}
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

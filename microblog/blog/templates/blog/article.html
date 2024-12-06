@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Microblog{% endblock %}
+
+{% block content %}
+<article>
+    <h2>{{ post.title }}</h2>
+    <p><small>By {{ post.author.username }} on {{ post.created }}</small></p>
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="Post Image">
+    {% endif %}
+    <p>{{ post.body }}</p>
+    <div>
+        <button>👍 Like</button>
+        <p>{{ post.likes_count }} likes</p>
+    </div>
+</article>
+<section>
+    <h3>Comments</h3>
+    {% if user.is_authenticated %}
+        <form action="{% url 'blog:article' id=post.id %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'blog:login' %}">Log in</a> to leave a comment.</p>
+    {% endif %}
+    <ul>
+        {% for comment in post.comments.all %}
+            <li><strong>{{ comment.author.username }}</strong>: {{ comment.body }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

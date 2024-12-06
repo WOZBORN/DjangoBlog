@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Create a New Post - Microblog{% endblock %}
+
+{% block content %}
+<h2>Create a New Post</h2>
+<form action="{% url 'blog:create' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Post</button>
+</form>
+{% endblock %}
